@@ -1,0 +1,406 @@
+https://www.101cookbooks.com/
+
+    Categories:
+    https://www.101cookbooks.com/whole_grain_recipes
+    https://www.101cookbooks.com/sides
+    https://www.101cookbooks.com/main_courses
+    https://www.101cookbooks.com/drink_recipes
+    https://www.101cookbooks.com/breakfast_brunch
+    https://www.101cookbooks.com/wfpb
+    https://www.101cookbooks.com/sandwiches
+    https://www.101cookbooks.com/instant_pot_recipes
+    https://www.101cookbooks.com/dinner_ideas
+    https://www.101cookbooks.com/baked_goods
+    https://www.101cookbooks.com/vegetarian_recipes
+    https://www.101cookbooks.com/salad-recipes/
+    https://www.101cookbooks.com/holiday_recipes
+    https://www.101cookbooks.com/desserts
+    https://www.101cookbooks.com/appetizers
+    https://www.101cookbooks.com/vegan-recipes/
+    https://www.101cookbooks.com/pasta-recipes/
+    https://www.101cookbooks.com/high_protein_recipes
+    https://www.101cookbooks.com/cookie-recipes/
+    https://www.101cookbooks.com/camping-recipes/
+    https://www.101cookbooks.com/soup-recipes/
+    https://www.101cookbooks.com/quick_recipes
+    https://www.101cookbooks.com/gluten_free_recipes
+    https://www.101cookbooks.com/chocolate_recipes
+
+
+    XPath the Recipe URL (within category pages):
+    1.  /html/body/div[1]/div/div/section[1]/main/div[1]/div[3]/div[2]/h5/a
+    2.  /html/body/div[1]/div/div/section[1]/main/div[1]/div[4]/div[2]/h5/a
+    3.  /html/body/div[1]/div/div/section[1]/main/div[1]/div[5]/div[2]/h5/a
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://www.101cookbooks.com/)
+    https://www.101cookbooks.com/useragreement.html
+    https://www.101cookbooks.com/privacy.html
+    https://www.101cookbooks.com/fulfillment-policy.html
+
+
+https://40aprons.com/
+
+    Categories (templates):
+    https://40aprons.com/recipes/method/xxxx/
+    https://40aprons.com/recipes/method/xx-xx/
+    https://40aprons.com/recipes/ingredients/xxxx/
+    https://40aprons.com/recipes/ingredients/xx-xx/
+    https://40aprons.com/recipes/ingredients/xx-xx-xx/
+    https://40aprons.com/recipes/dietary-concern/xxxx/
+    https://40aprons.com/recipes/dietary-concern/xx-xx/
+    https://40aprons.com/recipes/course/xxxx/
+    https://40aprons.com/recipes/course/xx-xx/
+    https://40aprons.com/recipes/season/xxxx/
+    https://40aprons.com/recipes/season/xx-xx/
+    https://40aprons.com/recipes/season/xx-xx-xx/
+
+    Categories (specific):
+    https://40aprons.com/recipes/method/air-fryer/
+    https://40aprons.com/recipes/method/baking/
+    https://40aprons.com/recipes/method/crockpot/
+    https://40aprons.com/recipes/method/grilling/
+    https://40aprons.com/recipes/method/instant-pot/
+    https://40aprons.com/recipes/method/no-cooking/
+    https://40aprons.com/recipes/method/roasted/
+    https://40aprons.com/recipes/method/sous-vide/
+    https://40aprons.com/recipes/dietary-concern/dairy-free/
+    https://40aprons.com/recipes/dietary-concern/gluten-free/
+    https://40aprons.com/recipes/dietary-concern/keto/
+    https://40aprons.com/recipes/dietary-concern/low-carb/
+    https://40aprons.com/recipes/dietary-concern/paleo/
+    https://40aprons.com/recipes/dietary-concern/vegan/
+    https://40aprons.com/recipes/dietary-concern/vegetarian/
+    https://40aprons.com/recipes/dietary-concern/whole30/
+
+    Categories are paginated:
+    https://40aprons.com/recipes/dietary-concern/gluten-free/
+    https://40aprons.com/recipes/dietary-concern/gluten-free/page/2/
+    https://40aprons.com/recipes/dietary-concern/gluten-free/page/3/
+
+    Last page integer value (on first category page):
+    If not present, less than 5 pages.
+    CSS Selector: a.page-numbers:nth-child(5)
+    XPath: /html/body/div[2]/div[2]/div/div/main/nav/div/a[3]
+
+    XPath the Recipe URL (within category pages):
+    1.  /html/body/div[2]/div[2]/div/div/main/div/article[1]/div/header/h2/a
+    2.  /html/body/div[2]/div[2]/div/div/main/div/article[2]/div/header/h2/a
+    3.  /html/body/div[2]/div[2]/div/div/main/div/article[3]/div/header/h2/a
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://40aprons.com/)
+    https://40aprons.com/40-aprons-premium/
+    https://40aprons.com/account
+    https://40aprons.com/40-aprons-premium-welcome/
+    https://40aprons.com/contact/
+    https://40aprons.com/about-cheryl-malik/
+    https://40aprons.com/members-only-dashboard
+    https://40aprons.com/meet-the-team/
+    https://40aprons.com/nutrition/
+    https://40aprons.com/privacy-policy/
+    https://40aprons.com/about-cheryl-malik/disclaimers/
+
+
+https://www.acouplecooks.com/
+    
+    Categories (all recipes, paginated):
+    https://www.acouplecooks.com/category/recipes/
+    https://www.acouplecooks.com/category/recipes/?_paged=2
+    https://www.acouplecooks.com/category/recipes/?_paged=3
+    ...
+    Current last page is 270
+    
+    Last page integer value (on first category page):
+    CSS Selector: a.facetwp-page:nth-child(5)
+    XPath: /html/body/div[1]/div[2]/div/main/div[4]/div/a[5]
+
+    XPath the Recipe URL (within category pages):
+    1.  /html/body/div[1]/div[2]/div/main/div[2]/article[1]/div[2]/h2/a
+    2.  /html/body/div[1]/div[2]/div/main/div[2]/article[2]/div[2]/h2/a
+    3.  /html/body/div[1]/div[2]/div/main/div[2]/article[3]/div[2]/h2/a
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://www.acouplecooks.com/)
+    https://www.acouplecooks.com/cookbook/
+    https://www.acouplecooks.com/start-here/
+    https://www.acouplecooks.com/editorial-policy/
+    https://www.acouplecooks.com/why-to-trust-us/
+    https://www.acouplecooks.com/accessibility-statement/
+    https://www.acouplecooks.com/category/podcast/
+    https://www.acouplecooks.com/category/travel/
+    https://www.acouplecooks.com/category/lifestyle/
+    https://www.acouplecooks.com/cookbook/
+    https://www.acouplecooks.com/privacy-policy/
+    https://www.acouplecooks.com/about/
+
+
+https://alexandracooks.com/
+    
+    Categories:
+    https://alexandracooks.com/category/recipe/soup/
+    https://alexandracooks.com/category/recipe/desserts/
+    https://alexandracooks.com/category/recipe/bread/
+    https://alexandracooks.com/category/recipe/drinks/
+    https://alexandracooks.com/category/recipe/sauces/
+    https://alexandracooks.com/category/recipe/salads/
+    https://alexandracooks.com/category/recipe/jams-spreads/
+    https://alexandracooks.com/category/recipe/breakfast/
+    https://alexandracooks.com/category/recipe/side-dish/
+    https://alexandracooks.com/category/recipe/dinner/
+    https://alexandracooks.com/category/recipe/appetizers/
+    https://alexandracooks.com/category/recipe/lunch/
+    https://alexandracooks.com/category/special-diet/vegetarian/
+    https://alexandracooks.com/category/special-diet/dairy-free/
+    https://alexandracooks.com/category/special-diet/vegan/
+    https://alexandracooks.com/category/special-diet/gluten-free/
+    https://alexandracooks.com/category/season/winter/
+    https://alexandracooks.com/category/season/spring/
+    https://alexandracooks.com/category/season/fall/
+    https://alexandracooks.com/category/season/summer/
+    https://alexandracooks.com/category/holidays/fathers-day/
+    https://alexandracooks.com/category/holidays/hanukah/
+    https://alexandracooks.com/category/holidays/birthdays/
+    https://alexandracooks.com/category/holidays/thanksgiving/
+    https://alexandracooks.com/category/holidays/cinco-de-mayo/
+    https://alexandracooks.com/category/holidays/christmas/
+    https://alexandracooks.com/category/holidays/new-years-eve/
+    https://alexandracooks.com/category/holidays/super-bowl-sunday/
+    https://alexandracooks.com/category/holidays/memorial-day/
+    https://alexandracooks.com/category/holidays/fourth-of-july/
+    https://alexandracooks.com/category/holidays/valentines-day/
+    https://alexandracooks.com/category/holidays/easter/
+    https://alexandracooks.com/category/holidays/st-patricks-day/
+    https://alexandracooks.com/category/holidays/mothers-day/
+    https://alexandracooks.com/category/holidays/halloween/
+
+
+    XPath the Recipe URL (within category pages):
+    1.  /html/body/div[3]/div[4]/div[4]/div/div[1]/a
+            <a href="https://alexandracooks.com/2021/03/26/simple-baked-ham-with-brown-sugar-glaze/" rel="bookmark" title="Simple Baked Ham Recipe with Brown Sugar Glaze">
+    2.  /html/body/div[3]/div[4]/div[4]/div/div[2]/a
+            <a href="https://alexandracooks.com/2023/05/27/5-ingredient-greek-salad-dressing-recipe/" rel="bookmark" title="5-Ingredient Greek Salad Dressing Recipe">
+    3.  /html/body/div[3]/div[4]/div[4]/div/div[3]/a
+            <a href="https://alexandracooks.com/2016/11/05/grandmothers-mustard-sauce/" rel="bookmark" title="My Grandmother’s Mustard Sauce (AKA: “The Ham Sauce”)">
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://alexandracooks.com/)
+    https://alexandracooks.com/about/
+    https://alexandracooks.com/shop/
+    https://alexandracooks.com/getting-started-guide/
+    https://alexandracooks.com/subscribe/
+    https://alexandracooks.com/feed/
+    https://alexandracooks.com/pizza-night/
+    https://alexandracooks.com/updated-privacy-policy/
+    https://alexandracooks.com/accessibility-policy/
+
+
+https://allthehealthythings.com/
+
+    Categories (all recipes, paginated):
+    https://allthehealthythings.com/recipe-index/
+    https://allthehealthythings.com/recipe-index/?fwp_paged=2
+    https://allthehealthythings.com/recipe-index/?fwp_paged=3
+    ...
+    Current last page is 63
+
+    Last page integer value (on first category page):
+    CSS Selector: a.facetwp-page:nth-child(5)
+    XPath: /html/body/div[1]/div[1]/div/div/main/div/article/div/div/div[3]/div/div[2]/div/div/div/div[4]/div/div/div/a[5]
+
+
+    XPath the Recipe URL (within category pages):
+    1.  /html/body/div[1]/div[1]/div/div/main/div/article/div/div/div[3]/div/div[2]/div/div/div/div[2]/article[1]/p/a
+    2.  /html/body/div[1]/div[1]/div/div/main/div/article/div/div/div[3]/div/div[2]/div/div/div/div[2]/article[2]/p/a
+    3.  /html/body/div[1]/div[1]/div/div/main/div/article/div/div/div[3]/div/div[2]/div/div/div/div[2]/article[3]/p/a
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://allthehealthythings.com/)
+    https://allthehealthythings.com/about/
+    https://allthehealthythings.com/shop/
+    https://allthehealthythings.com/privacy-policy/
+    https://allthehealthythings.com/copyright-notice/
+
+
+https://www.ambitiouskitchen.com/
+
+    Categories (all recipes, paginated):
+    https://www.ambitiouskitchen.com/recipe-index/
+    https://www.ambitiouskitchen.com/recipe-index/?sf_paged=2
+    https://www.ambitiouskitchen.com/recipe-index/?sf_paged=3
+    ...
+    Current last page is 46
+
+
+    XPath the Recipe URL (within category pages):
+    1.  /html/body/div[4]/div/div[2]/div/div[1]/a
+    2.  /html/body/div[4]/div/div[2]/div/div[2]/a
+    3.  /html/body/div[4]/div/div[2]/div/div[3]/a
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://www.ambitiouskitchen.com/)
+    https://www.ambitiouskitchen.com/cookbook/
+    https://www.ambitiouskitchen.com/holiday-gift-guides/mothers-day/
+    https://www.ambitiouskitchen.com/blog/
+    https://www.ambitiouskitchen.com/about/
+    https://www.ambitiouskitchen.com/privacy-policy/
+
+https://ameessavorydish.com/
+
+    Categories:
+    https://ameessavorydish.com/category/air-fryer/
+    https://ameessavorydish.com/category/appetizers/
+    https://ameessavorydish.com/category/beef/
+    https://ameessavorydish.com/category/beverages/
+    https://ameessavorydish.com/category/breakfast/
+    https://ameessavorydish.com/category/canning/
+    https://ameessavorydish.com/category/casseroles/
+    https://ameessavorydish.com/category/chicken/
+    https://ameessavorydish.com/category/christmas/
+    https://ameessavorydish.com/category/condiments/
+    https://ameessavorydish.com/category/cupcakes/
+    https://ameessavorydish.com/category/dairy-free/
+    https://ameessavorydish.com/category/desserts/
+    https://ameessavorydish.com/category/gluten-free/
+    https://ameessavorydish.com/category/grilling/
+    https://ameessavorydish.com/category/halloween/
+    https://ameessavorydish.com/category/high-protein-recipes/
+    https://ameessavorydish.com/category/holidays/
+    https://ameessavorydish.com/category/instant-pot/
+    https://ameessavorydish.com/category/low-carb/
+    https://ameessavorydish.com/category/lunch-ideas/
+    https://ameessavorydish.com/category/main-course/
+    https://ameessavorydish.com/category/marinades-and-rubs/
+    https://ameessavorydish.com/category/meal-prep/
+    https://ameessavorydish.com/category/muffins-and-breads/
+    https://ameessavorydish.com/category/paleo/
+    https://ameessavorydish.com/category/pancakes-waffles/
+    https://ameessavorydish.com/category/pasta/
+    https://ameessavorydish.com/category/dog-treats/
+    https://ameessavorydish.com/category/popular/
+    https://ameessavorydish.com/category/pork/
+    https://ameessavorydish.com/category/salads/
+    https://ameessavorydish.com/category/seafood/
+    https://ameessavorydish.com/category/seasonal-favorites/
+    https://ameessavorydish.com/category/side-dishes/
+    https://ameessavorydish.com/category/slowcooker/
+    https://ameessavorydish.com/category/snacks/
+    https://ameessavorydish.com/category/soups/
+    https://ameessavorydish.com/category/vegetarian/
+
+
+    XPath the Recipe URL (within category pages):
+    1.  /html/body/div[1]/div/div/div/main/div/article[1]/div/header/h2/a
+    2.  /html/body/div[1]/div/div/div/main/div/article[2]/div/header/h2/a
+    3.  /html/body/div[1]/div/div/div/main/div/article[3]/div/header/h2/a
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://ameessavorydish.com/)
+    https://ameessavorydish.com/subscribe/
+    https://ameessavorydish.com/about/
+    https://ameessavorydish.com/about/contact-me/
+    https://ameessavorydish.com/blog
+    https://ameessavorydish.com/privacy-policy/
+
+
+
+https://www.americastestkitchen.com/
+
+    Categories (all recipes):
+    https://www.americastestkitchen.com/recipes/all?p=100
+    all recipes loaded at this url
+
+    XPath the Recipe URL:
+    1.  /html/body/div[2]/main/div[2]/section/ul/li[1]/a
+    2.  /html/body/div[2]/main/div[2]/section/ul/li[2]/a
+    3.  /html/body/div[2]/main/div[2]/section/ul/li[3]/a
+    4.  ...
+
+    Ignore:
+    Any url without base url (https://www.americastestkitchen.com/)
+    https://www.americastestkitchen.com/browse
+    https://www.americastestkitchen.com/equipment
+    https://www.americastestkitchen.com/ingredients
+    https://www.americastestkitchen.com/learn
+    https://www.americastestkitchen.com/shows
+    https://www.americastestkitchen.com/sign_in
+    https://www.americastestkitchen.com/order?mdc=AF4110MA1D&incode=MAHBZFTBA
+    https://www.americastestkitchen.com/about-us/welcome
+    https://www.americastestkitchen.com/about-us/careers-at-atk
+    https://www.americastestkitchen.com/corporate-pages/terms-of-use
+    https://www.americastestkitchen.com/corporate-pages/privacy-policy
+    https://www.americastestkitchen.com/about-us/sponsors
+    https://www.americastestkitchen.com/about-us/media-contact
+    https://www.americastestkitchen.com/newsletter_preferences
+    https://www.americastestkitchen.com/gift/redeem?incode=MAFFFML0
+    https://www.americastestkitchen.com/mobile-app
+
+
+
+https://bakewithzoha.com/
+
+    Categories:
+    https://bakewithzoha.com/category/cakes/
+    https://bakewithzoha.com/category/cheesecakes/
+    https://bakewithzoha.com/category/brownies-and-cookies/
+    https://bakewithzoha.com/category/mug-cakes/
+    https://bakewithzoha.com/category/baked-desserts/
+    https://bakewithzoha.com/category/no-bake-desserts/
+    https://bakewithzoha.com/category/small-serve-desserts/
+    https://bakewithzoha.com/category/sweet-breads/
+    https://bakewithzoha.com/category/pakistani/
+    https://bakewithzoha.com/category/savory-breads/
+    https://bakewithzoha.com/category/comfort-food/
+    https://bakewithzoha.com/category/spring-recipes/
+    https://bakewithzoha.com/category/summer-recipes/
+    https://bakewithzoha.com/category/fall-recipes/
+    https://bakewithzoha.com/category/winter-recipes/
+
+    Categories are paginated:
+    e.g. https://bakewithzoha.com/category/cakes/page/2/
+
+    XPath the Recipe URL (within category pages)
+    1.  /html/body/div/div[3]/div/main/div/div/ul/li[1]/a
+    2.  /html/body/div/div[3]/div/main/div/div/ul/li[2]/a
+    3.  /html/body/div/div[3]/div/main/div/div/ul/li[3]/a
+    4.  ...
+
+
+https://www.baking-sense.com/
+
+    Categories (all recipes, paginated)
+    https://www.baking-sense.com/category/recipes/
+    https://www.baking-sense.com/category/recipes/page/2/
+    https://www.baking-sense.com/category/recipes/page/3/
+    Current last page is 75
+
+    XPath the Recipe URL:
+    1.  /html/body/div[1]/div/div[2]/div/main/div[3]/article[1]/div/header/h2/a
+    2.  /html/body/div[1]/div/div[2]/div/main/div[3]/article[2]/div/header/h2/a
+    3.  /html/body/div[1]/div/div[2]/div/main/div[3]/article[3]/div/header/h2/a
+    4.  ...
+
+https://barefeetinthekitchen.com/
+
+    Categories (all recipes, paginated)
+    https://barefeetinthekitchen.com/recipes/
+    https://barefeetinthekitchen.com/recipes/?_paged=2
+    https://barefeetinthekitchen.com/recipes/?_paged=3
+    ...
+    Current last page is 55
+
+    XPath to Recipe URL:
+    1.  /html/body/div[1]/div[1]/div/div/main/article/div/div[2]/div[1]/article[1]/div[2]/h3/a
+    2.  /html/body/div[1]/div[1]/div/div/main/article/div/div[2]/div[1]/article[2]/div[2]/h3/a
+    3.  /html/body/div[1]/div[1]/div/div/main/article/div/div[2]/div[1]/article[3]/div[2]/h3/a
+    4.  ...
+
+
+
