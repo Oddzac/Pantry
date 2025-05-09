@@ -40,6 +40,10 @@ class FoodDataManager:
         """
         self.db_path = db_path
         self.ensure_database_exists()
+        
+        # Cache for CSV data
+        self.csv_temp_dir = None
+        self.branded_food_path = None
     
     def ensure_database_exists(self):
         """
@@ -63,7 +67,7 @@ class FoodDataManager:
                     upc TEXT NOT NULL,
                     brand_owner TEXT,
                     description TEXT,
-                    category TEXT,
+                    food_category TEXT,
                     serving_size REAL,
                     serving_size_unit TEXT,
                     household_serving TEXT
@@ -111,6 +115,11 @@ class FoodDataManager:
         # Check if we've already looked for this UPC online
         if self._already_checked_online(upc):
             print(f"No items found with UPC {upc} (previously checked online)")
+            # Prompt user to manually enter product details
+            manual_entry = self._prompt_for_manual_entry(upc)
+            if manual_entry:
+                self._save_to_local_db([manual_entry])
+                return [manual_entry]
             return []
         
         # Not found locally, try to find it online
@@ -127,9 +136,62 @@ class FoodDataManager:
         else:
             print(f"No items found with UPC {upc} online")
             
-            # Mark this UPC as checked but not found
-            self._mark_as_checked(upc, found=False)
-            return []
+            # Prompt user to manually enter product details
+            manual_entry = self._prompt_for_manual_entry(upc)
+            if manual_entry:
+                self._save_to_local_db([manual_entry])
+                self._mark_as_checked(upc, found=True)
+                return [manual_entry]
+            else:
+                # Mark this UPC as checked but not found
+                self._mark_as_checked(upc, found=False)
+                return []
+    
+    def _prompt_for_manual_entry(self, upc):
+        """
+        Prompt the user to manually enter product details.
+        
+        Args:
+            upc: The UPC code for the product
+            
+        Returns:
+            Dictionary with product details or None if user cancels
+        """
+        print("\n" + "="*50)
+        print(f"Product with UPC {upc} not found. Would you like to enter details manually?")
+        choice = input("Enter 'y' to continue or any other key to skip: ").strip().lower()
+        
+        if choice != 'y':
+            return None
+        
+        print("\nPlease enter the following product details:")
+        brand_owner = input("Brand name: ").strip()
+        description = input("Product description: ").strip()
+        category = input("Product category (e.g., Cereal, Snacks, Beverages): ").strip()
+        
+        serving_size = None
+        while serving_size is None:
+            try:
+                serving_size_input = input("Serving size (numeric value only): ").strip()
+                if serving_size_input:
+                    serving_size = float(serving_size_input)
+                else:
+                    serving_size = 0
+            except ValueError:
+                print("Please enter a valid number.")
+        
+        serving_size_unit = input("Serving size unit (e.g., g, ml, oz): ").strip()
+        household_serving = input("Household serving (e.g., 1 cup, 2 tbsp): ").strip()
+        
+        return {
+            "gtinUpc": upc,
+            "brandOwner": brand_owner,
+            "description": description,
+            "brandedFoodCategory": category,
+            "servingSize": serving_size,
+            "servingSizeUnit": serving_size_unit,
+            "householdServingFullText": household_serving
+        }
     
     def _lookup_local(self, upc):
         """
@@ -159,7 +221,7 @@ class FoodDataManager:
                     "upc": row["upc"],
                     "brandOwner": row["brand_owner"],
                     "description": row["description"],
-                    "brandedFoodCategory": row["category"],
+                    "brandedFoodCategory": row["food_category"],
                     "servingSize": row["serving_size"],
                     "servingSizeUnit": row["serving_size_unit"],
                     "householdServingFullText": row["household_serving"]
@@ -317,77 +379,109 @@ class FoodDataManager:
             List of dictionaries with food item data
         """
         try:
-            # URL for the branded foods CSV file (smaller than the JSON)
-            csv_url = "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_branded_food_csv_2025-04-24.zip"
-            
-            print(f"Downloading CSV data for UPC {upc}...")
-            start_time = time.time()
-            
-            # Create a temporary directory to extract files
-            temp_dir = tempfile.mkdtemp()
-            
-            try:
-                # Download the ZIP file
-                zip_path = os.path.join(temp_dir, "food_data.zip")
+            # Check if we already have the CSV data cached
+            if not self.branded_food_path or not os.path.exists(self.branded_food_path):
+                # We need to download and extract the CSV
+                self._download_and_extract_csv()
                 
-                print("Downloading ZIP file...")
-                with requests.get(csv_url, stream=True) as response:
-                    response.raise_for_status()
-                    with open(zip_path, 'wb') as f:
-                        for chunk in response.iter_content(chunk_size=8192):
-                            if chunk:
-                                f.write(chunk)
-                
-                print("Extracting ZIP file...")
-                with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-                    zip_ref.extractall(temp_dir)
-                
-                # Look for the branded_food.csv file
-                branded_food_path = None
-                for root, dirs, files in os.walk(temp_dir):
-                    for file in files:
-                        if file.endswith('.csv') and 'branded_food' in file:
-                            branded_food_path = os.path.join(root, file)
-                            break
-                    if branded_food_path:
-                        break
-                
-                if not branded_food_path:
-                    print("Could not find branded_food.csv in the ZIP file")
+                if not self.branded_food_path:
+                    print("Failed to download and extract CSV data")
                     return []
+            
+            print(f"Searching for UPC {upc} in CSV file...")
+            start_time = time.time()
+            results = []
+            
+            # Process the CSV file
+            with open(self.branded_food_path, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    if row.get('gtinUpc') == upc:
+                        # Extract essential fields
+                        item = {}
+                        for field in self.ESSENTIAL_FIELDS:
+                            if field in row:
+                                item[field] = row[field]
+                        
+                        if item:
+                            results.append(item)
+                            print(f"Found matching UPC {upc} in CSV file")
+            
+            elapsed_time = time.time() - start_time
+            print(f"CSV lookup completed in {elapsed_time:.2f} seconds")
+            
+            return results
                 
-                print(f"Searching for UPC {upc} in CSV file...")
-                results = []
-                
-                # Process the CSV file
-                with open(branded_food_path, 'r', encoding='utf-8') as f:
-                    reader = csv.DictReader(f)
-                    for row in reader:
-                        if row.get('gtinUpc') == upc:
-                            # Extract essential fields
-                            item = {}
-                            for field in self.ESSENTIAL_FIELDS:
-                                if field in row:
-                                    item[field] = row[field]
-                            
-                            if item:
-                                results.append(item)
-                                print(f"Found matching UPC {upc} in CSV file")
-                
-                elapsed_time = time.time() - start_time
-                print(f"CSV lookup completed in {elapsed_time:.2f} seconds")
-                
-                return results
-                
-            finally:
-                # Clean up temporary directory
-                shutil.rmtree(temp_dir)
-        
         except Exception as e:
             print(f"Error during CSV lookup: {e}")
             import traceback
             traceback.print_exc()
             return []
+    
+    def _download_and_extract_csv(self):
+        """
+        Download and extract the CSV data, caching it for future use.
+        """
+        # URL for the branded foods CSV file (smaller than the JSON)
+        csv_url = self.CSV_URL
+        
+        print("Downloading CSV data...")
+        start_time = time.time()
+        
+        # Create a temporary directory to extract files if we don't have one already
+        if not self.csv_temp_dir:
+            self.csv_temp_dir = tempfile.mkdtemp()
+        
+        try:
+            # Download the ZIP file
+            zip_path = os.path.join(self.csv_temp_dir, "food_data.zip")
+            
+            print("Downloading ZIP file...")
+            with requests.get(csv_url, stream=True) as response:
+                response.raise_for_status()
+                with open(zip_path, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+            
+            print("Extracting ZIP file...")
+            with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                zip_ref.extractall(self.csv_temp_dir)
+            
+            # Look for the branded_food.csv file
+            self.branded_food_path = None
+            for root, dirs, files in os.walk(self.csv_temp_dir):
+                for file in files:
+                    if file.endswith('.csv') and 'branded_food' in file:
+                        self.branded_food_path = os.path.join(root, file)
+                        break
+                if self.branded_food_path:
+                    break
+            
+            if not self.branded_food_path:
+                print("Could not find branded_food.csv in the ZIP file")
+                return
+            
+            elapsed_time = time.time() - start_time
+            print(f"CSV download and extraction completed in {elapsed_time:.2f} seconds")
+            
+        except Exception as e:
+            print(f"Error during CSV download and extraction: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def cleanup(self):
+        """
+        Clean up temporary files and directories.
+        """
+        if self.csv_temp_dir and os.path.exists(self.csv_temp_dir):
+            try:
+                shutil.rmtree(self.csv_temp_dir)
+                self.csv_temp_dir = None
+                self.branded_food_path = None
+                print("Cleaned up temporary CSV data")
+            except Exception as e:
+                print(f"Error cleaning up temporary directory: {e}")
     
     def _save_to_local_db(self, items):
         """
@@ -413,7 +507,7 @@ class FoodDataManager:
                     upc, 
                     brand_owner, 
                     description, 
-                    category, 
+                    food_category, 
                     serving_size, 
                     serving_size_unit, 
                     household_serving
@@ -472,27 +566,31 @@ def interactive_lookup(db_path):
     """
     data_manager = FoodDataManager(db_path)
     
-    print(f"Food Database Lookup Tool (On-Demand Version)")
-    print(f"Database: {db_path}")
-    print("Enter a UPC/barcode to look up food information")
-    print("Items not found locally will be searched online")
-    print("Type 'exit', 'quit', or 'q' to exit the program")
-    print("-" * 50)
-    
-    while True:
-        upc = input("\nEnter UPC/barcode: ").strip()
+    try:
+        print(f"Food Database Lookup Tool (On-Demand Version)")
+        print(f"Database: {db_path}")
+        print("Enter a UPC/barcode to look up food information")
+        print("Items not found locally will be searched online")
+        print("Type 'exit', 'quit', or 'q' to exit the program")
+        print("-" * 50)
         
-        # Check for exit commands
-        if upc.lower() in ['exit', 'quit', 'q']:
-            print("Exiting program. Goodbye!")
-            break
-        
-        # Skip empty input
-        if not upc:
-            continue
-        
-        # Look up the UPC
-        data_manager.lookup_food_by_upc(upc)
+        while True:
+            upc = input("\nEnter UPC/barcode: ").strip()
+            
+            # Check for exit commands
+            if upc.lower() in ['exit', 'quit', 'q']:
+                print("Exiting program. Goodbye!")
+                break
+            
+            # Skip empty input
+            if not upc:
+                continue
+            
+            # Look up the UPC
+            data_manager.lookup_food_by_upc(upc)
+    finally:
+        # Clean up temporary files when exiting
+        data_manager.cleanup()
 
 def import_from_existing_db(source_db_path, target_db_path):
     """
@@ -539,7 +637,7 @@ def import_from_existing_db(source_db_path, target_db_path):
                 upc, 
                 brand_owner, 
                 description, 
-                category, 
+                food_category, 
                 serving_size, 
                 serving_size_unit, 
                 household_serving
@@ -548,7 +646,7 @@ def import_from_existing_db(source_db_path, target_db_path):
                 row['upc'],
                 row['brand_owner'],
                 row['description'],
-                row['category'],
+                row['food_category'],
                 row['serving_size'],
                 row['serving_size_unit'],
                 row['household_serving']
